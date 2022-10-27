@@ -23,7 +23,7 @@ import h5py
 
 """ This is a practice siumulation using classes to define 2 dimensional stochastic diffusion.
     Here, I also check the 2 dimensional result with theoretical results of 2D 
-    diffusion with and without boundaries. Note: particles are sizeless """
+    diffusion with and without boundaries. """
 
 class MV_diffusion():
     def __init__(self, rMV=50, L=1, K=1000, D=0.0001, n_molecules = 100, x0 = [50,50], tau_step_ = 0.01, tf = 200.0, ka = 1.0, kd = 1.0, random_walk_test = False, record_af = False, record_CF = False):
