@@ -79,10 +79,10 @@ class FlatInterfaceFP():
         
     def tau_step(self):
         
-        
         self.t = self.t + self.tau_step_
         if self.t > self.T_decision:
             self.done = True
+            
         
     def update_state(self):
         
@@ -129,15 +129,7 @@ class FlatInterfaceFP():
         # a vector to determine if the escapes were dissociations or phospho
         v_escape_to = np.random.binomial(1, self.alpha_host, bound_escapes)
         
-        #print(v_escape_to)
-     
-        
-        
-        
-        
-        
-      
-        
+
         # update binding #
         if bindings > 0:
             # make adjustments (this should go at the end after debugging)
@@ -169,45 +161,21 @@ class FlatInterfaceFP():
         
         
         
-    def step(self,action):
-        ### here, take action and update environment ###
-        ### action is an array with model parameters ###
-        # kp parameters #
-        self.kon = action[0]
-        self.kp = action[1]
-        self.koff = action[2]
-        
-        
-        # probabilities used in update function
-        self.alpha_ag = self.kp/(self.kp+self.koff)
-        self.alpha_host = self.kp/(self.kp+self.koff*self.sigma)
-        
-        # kp steps
-        self.N = action[3]
-        
-        
-        # decision time (contact time)
-        self.T_decision = action[4]
-        
-        
-        ### need to return reward, new_observation, done ###
-#        observation = 
-        
-        
-        
-        
+# # uncomment to run
+# Default parameters (kon=1.0, kp=1.0, koff=1.0, sigma=5.0, N=3, n_0=[1000,0], T_decision=60 )
+# n_0 = [n_self,n_ag]
 # FPT_array = np.zeros((1,10000))        
 
 # for ind in range(10000):
-#     FI = FlatInterfaceFP()       
-#     FI.reset()
-#     while FI.done==False:
-#         FI.tau_step()
-#         FI.update_state()
+#     FI = FlatInterfaceFP() # Initialize Environment       
+#     FI.reset() # Reset Environment      
+#     while FI.done==False: # Check Done Flag
+#         FI.tau_step() # Update contact time
+#         FI.update_state() # Update the states
 #     FPT_array[0,ind] = FI.t
-    
+# # Uncomment to save to h5
 # data_file = h5py.File('FPT_array_tau_leap.h5', 'a')
-# data_file.create_dataset('default_params_n_1000_1_koff_5', data=FPT_array)
+# data_file.create_dataset('fpt', data=FPT_array)
 # data_file.close()    
 
    
