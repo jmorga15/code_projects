@@ -9,10 +9,7 @@ import random
 import h5py
 
 ### This is the flat interface environment
-### stochastic simulation is overkill since we know the distributions already (sort of)
-### but this is more to practice the algorithms in a simple environment
 ### this model does not account for discrete populations of TCRs
-### that will be version 2 of this model
 
 class FlatInterfaceFP():
     def __init__(self, kon=1.0, kp=1.0, koff=1.0, sigma=5.0, N=3, n_0=[1000,0], T_decision=60 ):
