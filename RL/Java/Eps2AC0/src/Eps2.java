@@ -22,14 +22,18 @@ public class Eps2{
     private void initializeRandomCue() {
         // Randomly select one of four cues
         cueIndex = random.nextInt(4);
-        state[cueIndex] = 1; // Set selected cue to 1
+//        state[cueIndex] = 1; // Set selected cue to 1
     }
 
     // Method to receive an action and update the state
     public double takeAction(double nu1, double nu2, int timeStep) {
-        // Ensure nu1 and nu2 sum up to 1 and are within range [0,1]
-        if (nu1 + nu2 != 1.0 || nu1 < 0 || nu1 > 1 || nu2 < 0 || nu2 > 1) {
-            throw new IllegalArgumentException("Invalid action values. nu1 and nu2 should sum to 1 and be within [0,1]");
+        final double TOLERANCE = 1E-6;
+
+        System.out.println("handleFirstTimeStep - nu1: " + nu1 + ", nu2: " + nu2);
+
+        // Check if the sum of nu1 and nu2 is approximately 1.0 within the defined tolerance
+        if (Math.abs(nu1 + nu2 - 1.0) > TOLERANCE || nu1 < 0 || nu1 > 1 || nu2 < 0 || nu2 > 1) {
+            throw new IllegalArgumentException("Invalid action values. nu1 and nu2 should sum to 1 (within a tolerance) and be within [0,1]");
         }
 
         if (timeStep == 1) {
@@ -44,20 +48,32 @@ public class Eps2{
         }
     }
     private void handleFirstTimeStep(double nu1, double nu2) {
-        // Ensure nu1 and nu2 sum up to 1 and are within range [0,1]
-        if (nu1 + nu2 != 1.0 || nu1 < 0 || nu1 > 1 || nu2 < 0 || nu2 > 1) {
-            throw new IllegalArgumentException("Invalid action values. nu1 and nu2 should sum to 1 and be within [0,1]");
+        // Define a small tolerance for floating-point comparisons
+        final double TOLERANCE = 1E-6;
+
+        System.out.println("handleFirstTimeStep - nu1: " + nu1 + ", nu2: " + nu2);
+
+        // Check if the sum of nu1 and nu2 is approximately 1.0 within the defined tolerance
+        if (Math.abs(nu1 + nu2 - 1.0) > TOLERANCE || nu1 < 0 || nu1 > 1 || nu2 < 0 || nu2 > 1) {
+            throw new IllegalArgumentException("Invalid action values. nu1 and nu2 should sum to 1 (within a tolerance) and be within [0,1]");
         }
 
         // Check if the visual cue is observed based on the attention allocation and cue type
-        boolean isLeftCueObserved = (state[0] == 1 || state[1] == 1) && nu1 >= 0.3;
-        boolean isRightCueObserved = (state[2] == 1 || state[3] == 1) && nu2 >= 0.3;
+        boolean isLeftCueObserved = (cueIndex == 0 || cueIndex == 1) && nu1 >= 0.3;
+        boolean isRightCueObserved = (cueIndex == 2 || cueIndex == 3) && nu2 >= 0.3;
+
+        state[5] = 1;
+        state[4] = 0;
+        state[cueIndex]=1;
 
         // Update the state only if the cue is not observed
         if (!isLeftCueObserved && !isRightCueObserved) {
             // If the cue is not observed, adjust the state
             state = new double[]{0, 0, 0, 0, 0, 1}; // Cue not observed
         }
+
+
+
         // Otherwise, leave the state as it is (cue observed)
     }
     private double handleSecondTimeStep(double nu1, double nu2) {
